@@ -10,6 +10,7 @@ parameters:
 
     operator:
       helmValues:
+        useCertManager: true
         clusterOperator:
           podSecurityContext:
             enabled: false
@@ -17,6 +18,7 @@ parameters:
             enabled: false
 
         msgTopologyOperator:
+          existingWebhookCertSecret: msg-topology-operator-cert
           podSecurityContext:
             enabled: false
           containerSecurityContext:
