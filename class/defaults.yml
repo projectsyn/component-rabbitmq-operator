@@ -3,7 +3,24 @@ parameters:
     =_metadata:
       multi_tenant: true
     namespace: syn-rabbitmq-operator
-    cluster-operator:
-      version: v2.5.0
-    messaging-topology-operator:
-      version: v1.12.1
+    charts:
+      rabbitmq-cluster-operator:
+        source: https://charts.bitnami.com/bitnami
+        version: 3.10.5
+    images:
+      rabbitmq-cluster-operator:
+
+
+    operator:
+      helmValues:
+        clusterOperator:
+          podSecurityContext:
+            enabled: false
+          containerSecurityContext:
+            enabled: false
+
+        msgTopologyOperator:
+          podSecurityContext:
+            enabled: false
+          containerSecurityContext:
+            enabled: false

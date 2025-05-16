@@ -1,12 +1,11 @@
 parameters:
   kapitan:
     dependencies:
-      - type: https
-        source: https://github.com/rabbitmq/cluster-operator/releases/download/${rabbitmq_operator:cluster-operator:version}/cluster-operator.yml
-        output_path: dependencies/rabbitmq-operator/manifests/cluster-operator/operator.yaml
-      - type: https
-        source: https://github.com/rabbitmq/cluster-operator/releases/download/${rabbitmq_operator:messaging-topology-operator:version}/cluster-operator.yml
-        output_path: dependencies/rabbitmq-operator/manifests/messaging-topology-operator/operator.yaml
+      - type: helm
+        source: ${rabbitmq_operator:charts:rabbitmq-cluster-operator:source}
+        chart_name: rabbitmq-cluster-operator
+        version: ${rabbitmq_operator:charts:rabbitmq-cluster-operator:version}
+        output_path: ${_base_directory}/dependencies/rabbitmq-cluster-operator/helmchart/rabbitmq-${rabbitmq_operator:charts:rabbitmq-cluster-operator:version}
     compile:
       - input_paths:
           - ${_base_directory}/component/app.jsonnet
@@ -16,3 +15,12 @@ parameters:
           - ${_base_directory}/component/main.jsonnet
         input_type: jsonnet
         output_path: rabbitmq-operator/
+
+      - input_type: helm
+        input_paths:
+          - ${_base_directory}/dependencies/rabbitmq-cluster-operator/helmchart/rabbitmq-${rabbitmq_operator:charts:rabbitmq-cluster-operator:version}
+        helm_values: ${rabbitmq_operator:operator:helmValues}
+        helm_params:
+          name: ${_instance}
+          namespace: ${rabbitmq_operator:namespace}
+        output_path: rabbitmq-operator/helmchart
