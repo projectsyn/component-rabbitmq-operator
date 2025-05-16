@@ -98,4 +98,4 @@ spec:
         - name: cert
           secret:
             defaultMode: 420
-            secretName: msg-topology-operator-cert
+            secretName: rabbitmq-operator-rabbitmq-messaging-topology-operator-webhook

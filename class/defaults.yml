@@ -18,7 +18,6 @@ parameters:
             enabled: false
 
         msgTopologyOperator:
-          existingWebhookCertSecret: msg-topology-operator-cert
           podSecurityContext:
             enabled: false
           containerSecurityContext:
