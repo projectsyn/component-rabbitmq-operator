@@ -86,17 +86,6 @@ spec:
           resources:
             limits: {}
             requests: {}
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
-            privileged: false
-            readOnlyRootFilesystem: false
-            runAsNonRoot: true
-            runAsUser: 1001
-            seccompProfile:
-              type: RuntimeDefault
           volumeMounts:
             - mountPath: /tmp/k8s-webhook-server/serving-certs
               name: cert
@@ -104,8 +93,6 @@ spec:
       dnsPolicy: ClusterFirst
       hostNetwork: false
       initContainers: null
-      securityContext:
-        fsGroup: 1001
       serviceAccountName: rabbitmq-operator-rabbitmq-messaging-topology-operator
       volumes:
         - name: cert

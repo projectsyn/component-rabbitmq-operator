@@ -7,4 +7,5 @@ local params = inv.parameters.rabbitmq_operator;
 
 // Define outputs below
 {
+    '00_namespace': kube.Namespace(params.namespace),
 }
