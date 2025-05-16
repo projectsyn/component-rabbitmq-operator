@@ -1,5 +1,12 @@
 parameters:
   kapitan:
+    dependencies:
+      - type: https
+        source: https://github.com/rabbitmq/cluster-operator/releases/download/${rabbitmq_operator:cluster-operator:version}/cluster-operator.yml
+        output_path: dependencies/rabbitmq-operator/manifests/cluster-operator/operator.yaml
+      - type: https
+        source: https://github.com/rabbitmq/cluster-operator/releases/download/${rabbitmq_operator:messaging-topology-operator:version}/cluster-operator.yml
+        output_path: dependencies/rabbitmq-operator/manifests/messaging-topology-operator/operator.yaml
     compile:
       - input_paths:
           - ${_base_directory}/component/app.jsonnet

@@ -3,3 +3,7 @@ parameters:
     =_metadata:
       multi_tenant: true
     namespace: syn-rabbitmq-operator
+    cluster-operator:
+      version: v2.5.0
+    messaging-topology-operator:
+      version: v1.12.1

@@ -11,9 +11,14 @@ default:: `syn-rabbitmq-operator`
 The namespace in which to deploy this component.
 
 
-== Example
+== `cluster-operator.version`
 
-[source,yaml]
-----
-namespace: example-namespace
-----
+[horizontal]
+type:: string
+default:: `v2.5.0`
+
+== `messaging-topology-operator`
+
+[horizontal]
+type:: string
+default:: `v1.12.1`
