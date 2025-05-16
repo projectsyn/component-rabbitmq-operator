@@ -1,0 +1,5 @@
+parameters:
+  rabbitmq_operator:
+    =_metadata:
+      multi_tenant: true
+    namespace: syn-rabbitmq-operator
