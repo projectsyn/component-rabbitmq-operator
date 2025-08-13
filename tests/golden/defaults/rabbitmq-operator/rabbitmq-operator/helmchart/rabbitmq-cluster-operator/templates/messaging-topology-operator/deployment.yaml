@@ -55,7 +55,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
           envFrom: null
-          image: docker.io/bitnami/rmq-messaging-topology-operator:1.12.1-debian-11-r2
+          image: docker.io/bitnamilegacy/rmq-messaging-topology-operator:1.12.1-debian-11-r2
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 5
