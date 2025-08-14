@@ -55,11 +55,11 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: DEFAULT_RABBITMQ_IMAGE
-              value: docker.io/bitnami/rabbitmq:3.11.26-debian-11-r0
+              value: docker.io/bitnamilegacy/rabbitmq:3.11.26-debian-11-r0
             - name: DEFAULT_USER_UPDATER_IMAGE
-              value: docker.io/bitnami/rmq-default-credential-updater:1.0.4-debian-11-r2
+              value: docker.io/bitnamilegacy/rmq-default-credential-updater:1.0.4-debian-11-r2
           envFrom: null
-          image: docker.io/bitnami/rabbitmq-cluster-operator:2.5.0-debian-11-r39
+          image: docker.io/bitnamilegacy/rabbitmq-cluster-operator:2.5.0-debian-11-r39
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 5
