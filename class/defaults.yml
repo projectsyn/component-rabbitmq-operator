@@ -36,3 +36,22 @@ parameters:
         credentialUpdaterImage:
           registry: docker.io
           repository: bitnamilegacy/rmq-default-credential-updater
+    prober:
+      enabled: true
+      name: rabbitmq-prober
+      namespace: rabbitmq
+      image: ghcr.io/projectsyn/component-rabbitmq-operator/prober:latest
+      secretName: rabbitmq-default-user
+      probeInterval: '10'
+      metricsPort: 8080
+      useTLS: 'true'
+      resources:
+        requests:
+          memory: '64Mi'
+          cpu: '50m'
+        limits:
+          memory: '128Mi'
+          cpu: '100m'
+      monitoring:
+        interval: '10s'
+        recordingRulesInterval: '10s'

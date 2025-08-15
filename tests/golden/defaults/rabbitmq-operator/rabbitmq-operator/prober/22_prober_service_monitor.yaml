@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: rabbitmq-prober
+  name: rabbitmq-prober
+  namespace: rabbitmq
+spec:
+  endpoints:
+    - interval: 10s
+      path: /metrics
+      port: metrics
+      relabelings:
+        - replacement: rabbitmq-prober-service.monitoring.svc.cluster.local:8080
+          sourceLabels: []
+          targetLabel: instance
+  selector:
+    matchLabels:
+      app: rabbitmq-prober

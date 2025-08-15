@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: rabbitmq-prober-recording-rules
+  namespace: rabbitmq
+spec:
+  groups:
+    - interval: 10s
+      name: rabbitmq.sla.recording
+      rules:
+        - expr: max(rabbitmq_functional_availability{job="rabbitmq-prober-service"})
+          record: rabbitmq:availability:current
+        - expr: avg_over_time(rabbitmq:availability:current[5m])
+          record: rabbitmq:availability:rate5m
+        - expr: avg_over_time(rabbitmq:availability:current[1h])
+          record: rabbitmq:availability:rate1h
+        - expr: avg_over_time(rabbitmq:availability:current[24h])
+          record: rabbitmq:availability:rate24h
+        - expr: rabbitmq:availability:rate24h * 100
+          record: rabbitmq:sla_percentage
