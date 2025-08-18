@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: amqps
+  namespace: rabbitmq
+spec:
+  host: amqps.rabbitmq.com
+  port:
+    targetPort: amqps
+  tls:
+    termination: passthrough
+  to:
+    kind: Service
+    name: rabbitmq

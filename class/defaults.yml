@@ -36,8 +36,37 @@ parameters:
         credentialUpdaterImage:
           registry: docker.io
           repository: bitnamilegacy/rmq-default-credential-updater
-    prober:
+    rabbitmq:
       enabled: true
+      name: rabbitmq
+      namespace: rabbitmq
+      namespaceLabels: {}
+      image: docker.io/bitnamilegacy/rabbitmq:3.11.26-debian-11-r0
+      affinity: {}
+      plugins: []
+      persistence:
+        storage: 3Gi
+      resources:
+        limits:
+          memory: 3Gi
+          cpu: '1'
+        requests:
+          memory: 3Gi
+          cpu: '1'
+      replicas: 1
+      tls:
+        enabled: false
+        secretName: rabbitmq-certs
+        disableNonTLSListeners: true
+        dnsNames:
+          amqps: amqps.rabbitmq.com
+          management: management.rabbitmq.com
+      rbac:
+        enabled: false
+        group: group
+
+    prober:
+      enabled: false
       name: rabbitmq-prober
       namespace: rabbitmq
       image: ghcr.io/projectsyn/component-rabbitmq-operator/prober:latest

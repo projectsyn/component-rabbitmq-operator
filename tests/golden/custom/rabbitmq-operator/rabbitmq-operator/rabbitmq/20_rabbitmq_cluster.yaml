@@ -1,0 +1,38 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: rabbitmq
+  namespace: rabbitmq
+spec:
+  image: docker.io/bitnamilegacy/rabbitmq:3.11.26-debian-11-r0
+  override:
+    statefulSet:
+      spec:
+        template:
+          spec:
+            affinity:
+              podAntiAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  - labelSelector:
+                      matchLabels:
+                        app.kubernetes.io/name: rabbitmq-test
+                    topologyKey: kubernetes.io/hostname
+            containers: []
+            securityContext: {}
+  persistence:
+    storage: 3Gi
+  rabbitmq:
+    additionalPlugins:
+      - rabbitmq_shovel
+      - rabbitmq_shovel_management
+  replicas: 3
+  resources:
+    limits:
+      cpu: '1'
+      memory: 3Gi
+    requests:
+      cpu: '1'
+      memory: 3Gi
+  tls:
+    disableNonTLSListeners: true
+    secretName: rabbitmq-certs

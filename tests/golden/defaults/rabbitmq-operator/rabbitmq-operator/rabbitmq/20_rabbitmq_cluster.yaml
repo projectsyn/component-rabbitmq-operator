@@ -1,0 +1,26 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: rabbitmq
+  namespace: rabbitmq
+spec:
+  image: docker.io/bitnamilegacy/rabbitmq:3.11.26-debian-11-r0
+  override:
+    statefulSet:
+      spec:
+        template:
+          spec:
+            containers: []
+            securityContext: {}
+  persistence:
+    storage: 3Gi
+  rabbitmq:
+    additionalPlugins: []
+  replicas: 1
+  resources:
+    limits:
+      cpu: '1'
+      memory: 3Gi
+    requests:
+      cpu: '1'
+      memory: 3Gi

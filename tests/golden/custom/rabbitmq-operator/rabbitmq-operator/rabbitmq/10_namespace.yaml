@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations: {}
+  labels:
+    name: rabbitmq
+    test.net: true
+  name: rabbitmq
+spec: {}

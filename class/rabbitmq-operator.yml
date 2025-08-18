@@ -19,6 +19,10 @@ parameters:
           - ${_base_directory}/component/prober.jsonnet
         input_type: jsonnet
         output_path: rabbitmq-operator/prober/
+      - input_paths:
+          - ${_base_directory}/component/rabbitmq.jsonnet
+        input_type: jsonnet
+        output_path: rabbitmq-operator/rabbitmq/
 
       - input_type: helm
         input_paths:

@@ -1,0 +1,22 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  labels:
+    app.kubernetes.io/component: messaging-topology-operator
+    app.kubernetes.io/instance: rabbitmq-operator
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: rabbitmq-cluster-operator
+    app.kubernetes.io/part-of: rabbitmq
+    app.kubernetes.io/version: 1.12.1
+    helm.sh/chart: rabbitmq-cluster-operator-3.10.5
+  name: rabbitmq-operator-rabbitmq-messaging-topology-operator-webhook
+  namespace: syn-rabbitmq-operator
+spec:
+  commonName: rabbitmq-operator-rabbitmq-messaging-topology-operator-webhook
+  dnsNames:
+    - rabbitmq-operator-rabbitmq-messaging-topology-operator-webhook.syn-rabbitmq-operator.svc
+    - rabbitmq-operator-rabbitmq-messaging-topology-operator-webhook.syn-rabbitmq-operator.svc.cluster.local
+  issuerRef:
+    kind: Issuer
+    name: rabbitmq-operator-rabbitmq-cluster-operator
+  secretName: rabbitmq-operator-rabbitmq-messaging-topology-operator-webhook
