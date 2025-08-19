@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: management
+  namespace: rabbitmq
+spec:
+  host: management.rabbitmq.com
+  port:
+    targetPort: management-tls
+  tls:
+    termination: passthrough
+  to:
+    kind: Service
+    name: rabbitmq
