@@ -7,6 +7,16 @@ SHELL := bash
 
 include Makefile.vars.mk
 
+# Image configuration
+REGISTRY := ghcr.io
+ORG := projectsyn
+COMPONENT := component-rabbitmq-operator
+IMAGE_NAME := prober
+VERSION := latest
+PLATFORM := linux/amd64
+# Full image tag
+IMAGE_TAG := $(REGISTRY)/$(ORG)/$(COMPONENT)/$(IMAGE_NAME):$(VERSION)
+
 .PHONY: help
 help: ## Show this help
 	@grep -E -h '\s##\s' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = "(: ).*?## "}; {gsub(/\\:/,":", $$1)}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
@@ -82,3 +92,23 @@ $(test_instances):
 .PHONY: clean
 clean: ## Clean the project
 	rm -rf .cache compiled dependencies vendor helmcharts jsonnetfile*.json || true
+
+.PHONY: prober-build
+prober-build: ## Build Docker image locally
+	@echo "Building Docker image: $(IMAGE_TAG)"
+	docker buildx build \
+		--platform $(PLATFORM) \
+		--load \
+		-t $(IMAGE_TAG) \
+		-f docker/Dockerfile .
+	@echo "✅ Image built successfully: $(IMAGE_TAG)"
+
+.PHONY: prober-release
+prober-release: ## Build and push Docker image to registry
+	@echo "Building and pushing Docker image: $(IMAGE_TAG)"
+	docker buildx build \
+		--platform $(PLATFORM) \
+		--push \
+		-t $(IMAGE_TAG) \
+		-f docker/Dockerfile .
+	@echo "✅ Image built and pushed successfully: $(IMAGE_TAG)"

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations: {}
+  labels:
+    app: rabbitmq-prober
+  name: rabbitmq-prober-service
+  namespace: rabbitmq
+spec:
+  ports:
+    - name: metrics
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: rabbitmq-prober
+  type: ClusterIP
