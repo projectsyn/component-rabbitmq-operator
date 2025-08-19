@@ -74,6 +74,8 @@ parameters:
       probeInterval: '10'
       metricsPort: 8080
       useTLS: 'true'
+      alerts:
+        enabled: false
       resources:
         requests:
           memory: '64Mi'
