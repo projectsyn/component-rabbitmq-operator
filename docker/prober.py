@@ -31,7 +31,7 @@ logging.getLogger('pika').setLevel(logging.ERROR)
 
 def probe_rabbitmq():
     """Test RabbitMQ by publishing and consuming a message"""
-    start_time = time.time()
+    start_time = time.monotonic()
     probe_total_counter.inc()
     connection = None
 
