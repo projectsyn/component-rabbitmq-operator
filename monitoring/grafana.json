@@ -95,9 +95,9 @@
             "uid": "uaI0iF84z"
           },
           "editorMode": "code",
-          "expr": "rabbitmq_functional_availability",
+          "expr": "max by (job, cluster_id, namespace) (rabbitmq_functional_availability)",
           "interval": "",
-          "legendFormat": "Status",
+          "legendFormat": "{{namespace}}",
           "range": true,
           "refId": "A"
         }
@@ -169,9 +169,11 @@
             "type": "prometheus",
             "uid": "uaI0iF84z"
           },
-          "expr": "avg_over_time(rabbitmq_functional_availability[24h]) * 100",
+          "editorMode": "code",
+          "expr": "max by (job, cluster_id, namespace) (avg_over_time(rabbitmq_functional_availability[24h])) * 100",
           "interval": "",
-          "legendFormat": "24h SLA",
+          "legendFormat": "{{namespace}} 24h SLA",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -242,9 +244,11 @@
             "type": "prometheus",
             "uid": "uaI0iF84z"
           },
-          "expr": "avg_over_time(rabbitmq_functional_availability[7d]) * 100",
+          "editorMode": "code",
+          "expr": "max by (job, cluster_id, namespace) (avg_over_time(rabbitmq_functional_availability[7d])) * 100",
           "interval": "",
-          "legendFormat": "7d SLA",
+          "legendFormat": "{{namespace}} 7d SLA",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -315,9 +319,11 @@
             "type": "prometheus",
             "uid": "uaI0iF84z"
           },
-          "expr": "avg_over_time(rabbitmq_functional_availability[30d]) * 100",
+          "editorMode": "code",
+          "expr": "max by (job, cluster_id, namespace) (avg_over_time(rabbitmq_functional_availability[30d])) * 100",
           "interval": "",
-          "legendFormat": "30d SLA",
+          "legendFormat": "{{namespace}} 30d SLA",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -409,14 +415,229 @@
             "type": "prometheus",
             "uid": "uaI0iF84z"
           },
-          "expr": "rabbitmq_functional_availability",
+          "editorMode": "code",
+          "expr": "max by (job, cluster_id, namespace) (rabbitmq_functional_availability)",
           "interval": "",
-          "legendFormat": "RabbitMQ Status (1=UP, 0=DOWN)",
+          "legendFormat": "{{namespace}} (1=UP, 0=DOWN)",
+          "range": true,
           "refId": "A"
         }
       ],
       "title": "RabbitMQ Availability Over Time",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "uaI0iF84z"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              },
+              {
+                "color": "yellow",
+                "value": 99
+              },
+              {
+                "color": "green",
+                "value": 99.9
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*SLA.*"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 3
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*Duration.*"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              },
+              {
+                "id": "decimals",
+                "value": 3
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 8,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "uaI0iF84z"
+          },
+          "editorMode": "code",
+          "expr": "avg by (cluster_id, namespace, job) (avg_over_time(rabbitmq_functional_availability[1h])) * 100",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "1h_SLA",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "uaI0iF84z"
+          },
+          "editorMode": "code",
+          "expr": "avg by (cluster_id, namespace, job) (avg_over_time(rabbitmq_functional_availability[24h])) * 100",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "24h_SLA",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "uaI0iF84z"
+          },
+          "editorMode": "code",
+          "expr": "avg by (cluster_id, namespace, job) (avg_over_time(rabbitmq_functional_availability[7d])) * 100",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "7d_SLA",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "uaI0iF84z"
+          },
+          "editorMode": "code",
+          "expr": "avg by (cluster_id, namespace, job) (avg_over_time(rabbitmq_functional_availability[30d])) * 100",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "30d_SLA",
+          "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "uaI0iF84z"
+          },
+          "editorMode": "code",
+          "expr": "avg by (cluster_id, namespace, job) (rabbitmq_probe_total)",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Total_Probes",
+          "refId": "E"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "uaI0iF84z"
+          },
+          "editorMode": "code",
+          "expr": "avg by (cluster_id, namespace, job) (rabbitmq_probe_failures_total)",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Total_Failures",
+          "refId": "F"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "uaI0iF84z"
+          },
+          "editorMode": "code",
+          "expr": "avg by (cluster_id, namespace, job) (rabbitmq_probe_duration_seconds)",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Probe_Duration",
+          "refId": "G"
+        }
+      ],
+      "title": "SLA Summary Table (CSV Exportable)",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "instance": true,
+              "job": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Value #A": "1h SLA %",
+              "Value #B": "24h SLA %",
+              "Value #C": "7d SLA %",
+              "Value #D": "30d SLA %",
+              "Value #E": "Total Probes",
+              "Value #F": "Total Failures",
+              "Value #G": "Probe Duration (s)"
+            }
+          }
+        }
+      ],
+      "type": "table"
     },
     {
       "datasource": {
@@ -486,10 +707,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 11,
         "w": 12,
         "x": 0,
-        "y": 12
+        "y": 17
       },
       "id": 6,
       "options": {
@@ -515,9 +736,11 @@
             "type": "prometheus",
             "uid": "uaI0iF84z"
           },
-          "expr": "avg_over_time(rabbitmq_functional_availability[1h]) * 100",
+          "editorMode": "code",
+          "expr": "max by (job, cluster_id, namespace) (avg_over_time(rabbitmq_functional_availability[1h])) * 100",
           "interval": "",
           "legendFormat": "1h Rolling SLA %",
+          "range": true,
           "refId": "A"
         },
         {
@@ -525,9 +748,11 @@
             "type": "prometheus",
             "uid": "uaI0iF84z"
           },
-          "expr": "avg_over_time(rabbitmq_functional_availability[24h]) * 100",
+          "editorMode": "code",
+          "expr": "max by (job, cluster_id, namespace) (avg_over_time(rabbitmq_functional_availability[24h])) * 100",
           "interval": "",
           "legendFormat": "24h Rolling SLA %",
+          "range": true,
           "refId": "B"
         }
       ],
@@ -604,10 +829,10 @@
         ]
       },
       "gridPos": {
-        "h": 8,
+        "h": 11,
         "w": 12,
         "x": 12,
-        "y": 12
+        "y": 17
       },
       "id": 7,
       "options": {
@@ -633,9 +858,11 @@
             "type": "prometheus",
             "uid": "uaI0iF84z"
           },
-          "expr": "rabbitmq_probe_duration_seconds",
+          "editorMode": "code",
+          "expr": "max by (job, cluster_id, namespace) (rabbitmq_probe_duration_seconds)",
           "interval": "",
-          "legendFormat": "Probe Duration (seconds)",
+          "legendFormat": "{{namespace}} Probe Duration (seconds)",
+          "range": true,
           "refId": "A"
         },
         {
@@ -643,9 +870,11 @@
             "type": "prometheus",
             "uid": "uaI0iF84z"
           },
-          "expr": "rate(rabbitmq_probe_total[5m]) * 60",
+          "editorMode": "code",
+          "expr": "max by (job, cluster_id, namespace) (rate(rabbitmq_probe_total[5m])) * 60",
           "interval": "",
-          "legendFormat": "Probes per Minute",
+          "legendFormat": "{{namespace}} Probes per Minute",
+          "range": true,
           "refId": "B"
         },
         {
@@ -653,227 +882,16 @@
             "type": "prometheus",
             "uid": "uaI0iF84z"
           },
-          "expr": "rate(rabbitmq_probe_failures_total[5m]) * 60",
+          "editorMode": "code",
+          "expr": "max by (job, cluster_id, namespace) (rate(rabbitmq_probe_failures_total[5m])) * 60",
           "interval": "",
-          "legendFormat": "Failures per Minute",
+          "legendFormat": "{{namespace}} Failures per Minute",
+          "range": true,
           "refId": "C"
         }
       ],
       "title": "Probe Performance Metrics",
       "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "uaI0iF84z"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "center",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red"
-              },
-              {
-                "color": "yellow",
-                "value": 99
-              },
-              {
-                "color": "green",
-                "value": 99.9
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": ".*SLA.*"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percent"
-              },
-              {
-                "id": "decimals",
-                "value": 3
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": ".*Duration.*"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "s"
-              },
-              {
-                "id": "decimals",
-                "value": 3
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 24,
-        "x": 0,
-        "y": 20
-      },
-      "id": 8,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true
-      },
-      "pluginVersion": "12.0.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "uaI0iF84z"
-          },
-          "editorMode": "code",
-          "expr": "avg by (cluster_id, namespace) (avg_over_time(rabbitmq_functional_availability[1h])) * 100",
-          "format": "table",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "1h_SLA",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "uaI0iF84z"
-          },
-          "editorMode": "code",
-          "expr": "avg by (cluster_id, namespace) (avg_over_time(rabbitmq_functional_availability[24h])) * 100",
-          "format": "table",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "24h_SLA",
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "uaI0iF84z"
-          },
-          "editorMode": "code",
-          "expr": "avg by (cluster_id, namespace) (avg_over_time(rabbitmq_functional_availability[7d])) * 100",
-          "format": "table",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "7d_SLA",
-          "refId": "C"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "uaI0iF84z"
-          },
-          "editorMode": "code",
-          "expr": "avg by (cluster_id, namespace) (avg_over_time(rabbitmq_functional_availability[30d])) * 100",
-          "format": "table",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "30d_SLA",
-          "refId": "D"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "uaI0iF84z"
-          },
-          "editorMode": "code",
-          "expr": "avg by (cluster_id, namespace) (rabbitmq_probe_total)",
-          "format": "table",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "Total_Probes",
-          "refId": "E"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "uaI0iF84z"
-          },
-          "editorMode": "code",
-          "expr": "avg by (cluster_id, namespace) (rabbitmq_probe_failures_total)",
-          "format": "table",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "Total_Failures",
-          "refId": "F"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "uaI0iF84z"
-          },
-          "editorMode": "code",
-          "expr": "avg by (cluster_id, namespace) (rabbitmq_probe_duration_seconds)",
-          "format": "table",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "Probe_Duration",
-          "refId": "G"
-        }
-      ],
-      "title": "SLA Summary Table (CSV Exportable)",
-      "transformations": [
-        {
-          "id": "merge",
-          "options": {}
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "__name__": true,
-              "instance": true,
-              "job": true
-            },
-            "indexByName": {},
-            "renameByName": {
-              "Value #A": "1h SLA %",
-              "Value #B": "24h SLA %",
-              "Value #C": "7d SLA %",
-              "Value #D": "30d SLA %",
-              "Value #E": "Total Probes",
-              "Value #F": "Total Failures",
-              "Value #G": "Probe Duration (s)"
-            }
-          }
-        }
-      ],
-      "type": "table"
     }
   ],
   "preload": false,
@@ -887,12 +905,12 @@
     "list": []
   },
   "time": {
-    "from": "now-24h",
-    "to": "now"
+    "from": "2025-08-19T15:08:37.897Z",
+    "to": "2025-08-19T15:10:46.469Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "RabbitMQ SLA Dashboard",
   "uid": "rabbitmq-sla",
-  "version": 15
+  "version": 20
 }
