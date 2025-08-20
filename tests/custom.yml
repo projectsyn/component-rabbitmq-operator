@@ -4,6 +4,8 @@ parameters:
   rabbitmq_operator:
     prober:
       enabled: true
+      alerts:
+        enabled: true
     rabbitmq:
       replicas: 3
       affinity:

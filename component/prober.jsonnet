@@ -179,10 +179,62 @@ local prometheusRule = {
   },
 };
 
+local alertRules = {
+  apiVersion: 'monitoring.coreos.com/v1',
+  kind: 'PrometheusRule',
+  metadata: {
+    name: params.name + '-alerts',
+    namespace: params.namespace,
+  },
+  spec: {
+    groups: [
+      {
+        name: 'rabbitmq.alerts',
+        rules: [
+          {
+            alert: 'RabbitMQDown',
+            expr: 'max by (job, cluster_id, namespace) (rabbitmq_functional_availability) == 0',
+            'for': '2m',
+            labels: {
+              severity: 'warning',
+              syn_team: 'schedar',
+              syn: 'true',
+              syn_component: 'rabbitmq-operator',
+            },
+            annotations: {
+              summary: 'RabbitMQ is down',
+              description: 'RabbitMQ in namespace {{ $labels.namespace }} has been down for more than 1 minute',
+            },
+          },
+          {
+            alert: 'RabbitMQProbeFailures',
+            expr: 'increase(rabbitmq_probe_failures_total[5m]) > 3',
+            'for': '0m',
+            labels: {
+              severity: 'warning',
+              syn_team: 'schedar',
+              syn: 'true',
+              syn_component: 'rabbitmq-operator',
+            },
+            annotations: {
+              summary: 'Multiple RabbitMQ probe failures',
+              description: 'RabbitMQ prober in namespace {{ $labels.namespace }} has failed {{ $value }} times in the last 5 minutes',
+            },
+          },
+        ],
+      },
+    ],
+  },
+};
+
 
 if params.enabled then {
   '20_prober_deployment': deployment,
   '21_prober_service': service,
   '22_prober_service_monitor': serviceMonitor,
   '22_prober_service_prom_rule': prometheusRule,
-} else {}
+} + (
+  if params.alerts.enabled then {
+    '24_prober_alert_rules': alertRules,
+  } else {}
+) else {}
