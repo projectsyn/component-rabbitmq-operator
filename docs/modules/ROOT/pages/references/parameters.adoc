@@ -10,15 +10,477 @@ default:: `syn-rabbitmq-operator`
 
 The namespace in which to deploy this component.
 
+== Charts Configuration
 
-== `cluster-operator.version`
-
-[horizontal]
-type:: string
-default:: `v2.5.0`
-
-== `messaging-topology-operator`
+=== `charts.rabbitmq-cluster-operator.source`
 
 [horizontal]
 type:: string
-default:: `v1.12.1`
+default:: `https://charts.bitnami.com/bitnami`
+
+The Helm chart repository URL for the RabbitMQ cluster operator.
+
+=== `charts.rabbitmq-cluster-operator.version`
+
+[horizontal]
+type:: string
+default:: `3.10.5`
+
+The version of the RabbitMQ cluster operator Helm chart to deploy.
+
+== Operator Configuration
+
+=== `operator.helmValues.useCertManager`
+
+[horizontal]
+type:: boolean
+default:: `true`
+
+Whether to use cert-manager for certificate management.
+
+=== `operator.helmValues.clusterOperator.image.registry`
+
+[horizontal]
+type:: string
+default:: `docker.io`
+
+The container registry for the cluster operator image.
+
+=== `operator.helmValues.clusterOperator.image.repository`
+
+[horizontal]
+type:: string
+default:: `bitnamilegacy/rabbitmq-cluster-operator`
+
+The repository path for the cluster operator image.
+
+=== `operator.helmValues.clusterOperator.podSecurityContext.enabled`
+
+[horizontal]
+type:: boolean
+default:: `false`
+
+Whether to enable pod security context for the cluster operator.
+
+=== `operator.helmValues.clusterOperator.containerSecurityContext.enabled`
+
+[horizontal]
+type:: boolean
+default:: `false`
+
+Whether to enable container security context for the cluster operator.
+
+=== `operator.helmValues.msgTopologyOperator.image.registry`
+
+[horizontal]
+type:: string
+default:: `docker.io`
+
+The container registry for the messaging topology operator image.
+
+=== `operator.helmValues.msgTopologyOperator.image.repository`
+
+[horizontal]
+type:: string
+default:: `bitnamilegacy/rmq-messaging-topology-operator`
+
+The repository path for the messaging topology operator image.
+
+=== `operator.helmValues.msgTopologyOperator.podSecurityContext.enabled`
+
+[horizontal]
+type:: boolean
+default:: `false`
+
+Whether to enable pod security context for the messaging topology operator.
+
+=== `operator.helmValues.msgTopologyOperator.containerSecurityContext.enabled`
+
+[horizontal]
+type:: boolean
+default:: `false`
+
+Whether to enable container security context for the messaging topology operator.
+
+=== `operator.helmValues.rabbitmqImage.registry`
+
+[horizontal]
+type:: string
+default:: `docker.io`
+
+The container registry for the RabbitMQ image.
+
+=== `operator.helmValues.rabbitmqImage.repository`
+
+[horizontal]
+type:: string
+default:: `bitnamilegacy/rabbitmq`
+
+The repository path for the RabbitMQ image.
+
+=== `operator.helmValues.credentialUpdaterImage.registry`
+
+[horizontal]
+type:: string
+default:: `docker.io`
+
+The container registry for the credential updater image.
+
+=== `operator.helmValues.credentialUpdaterImage.repository`
+
+[horizontal]
+type:: string
+default:: `bitnamilegacy/rmq-default-credential-updater`
+
+The repository path for the credential updater image.
+
+== RabbitMQ Cluster Configuration
+
+=== `rabbitmq.enabled`
+
+[horizontal]
+type:: boolean
+default:: `true`
+
+Whether to deploy a RabbitMQ cluster instance.
+
+=== `rabbitmq.name`
+
+[horizontal]
+type:: string
+default:: `rabbitmq`
+
+The name of the RabbitMQ cluster.
+
+=== `rabbitmq.namespace`
+
+[horizontal]
+type:: string
+default:: `rabbitmq`
+
+The namespace in which to deploy the RabbitMQ cluster.
+
+=== `rabbitmq.namespaceLabels`
+
+[horizontal]
+type:: object
+default:: `{}`
+
+Additional labels to apply to the RabbitMQ namespace.
+
+=== `rabbitmq.image`
+
+[horizontal]
+type:: string
+default:: `docker.io/bitnamilegacy/rabbitmq:3.11.26-debian-11-r0`
+
+The RabbitMQ container image to use.
+
+=== `rabbitmq.affinity`
+
+[horizontal]
+type:: object
+default:: `{}`
+
+Kubernetes affinity rules for RabbitMQ pods. If empty, no affinity will be set.
+
+=== `rabbitmq.plugins`
+
+[horizontal]
+type:: array
+default:: `[]`
+
+List of additional RabbitMQ plugins to enable.
+
+=== `rabbitmq.persistence.storage`
+
+[horizontal]
+type:: string
+default:: `3Gi`
+
+The amount of persistent storage to allocate for each RabbitMQ pod.
+
+=== `rabbitmq.resources.limits.memory`
+
+[horizontal]
+type:: string
+default:: `3Gi`
+
+The memory limit for RabbitMQ containers.
+
+=== `rabbitmq.resources.limits.cpu`
+
+[horizontal]
+type:: string
+default:: `1`
+
+The CPU limit for RabbitMQ containers.
+
+=== `rabbitmq.resources.requests.memory`
+
+[horizontal]
+type:: string
+default:: `3Gi`
+
+The memory request for RabbitMQ containers.
+
+=== `rabbitmq.resources.requests.cpu`
+
+[horizontal]
+type:: string
+default:: `1`
+
+The CPU request for RabbitMQ containers.
+
+=== `rabbitmq.replicas`
+
+[horizontal]
+type:: integer
+default:: `1`
+
+The number of RabbitMQ replicas to deploy.
+
+=== `rabbitmq.tls.enabled`
+
+[horizontal]
+type:: boolean
+default:: `false`
+
+Whether to enable TLS for RabbitMQ connections.
+
+=== `rabbitmq.tls.secretName`
+
+[horizontal]
+type:: string
+default:: `rabbitmq-certs`
+
+The name of the Kubernetes secret containing TLS certificates.
+
+=== `rabbitmq.tls.disableNonTLSListeners`
+
+[horizontal]
+type:: boolean
+default:: `true`
+
+Whether to disable non-TLS listeners when TLS is enabled.
+
+=== `rabbitmq.tls.dnsNames.amqps`
+
+[horizontal]
+type:: string
+default:: `amqps.rabbitmq.com`
+
+The DNS name for the AMQPS endpoint.
+
+=== `rabbitmq.tls.dnsNames.management`
+
+[horizontal]
+type:: string
+default:: `management.rabbitmq.com`
+
+The DNS name for the management interface.
+
+=== `rabbitmq.rbac.enabled`
+
+[horizontal]
+type:: boolean
+default:: `false`
+
+Whether to create RBAC resources for accessing RabbitMQ.
+
+=== `rabbitmq.rbac.group`
+
+[horizontal]
+type:: string
+default:: `group`
+
+The group name to grant access to RabbitMQ resources.
+
+== Prober Configuration
+
+=== `prober.enabled`
+
+[horizontal]
+type:: boolean
+default:: `false`
+
+Whether to deploy the RabbitMQ health prober for SLA monitoring.
+
+=== `prober.name`
+
+[horizontal]
+type:: string
+default:: `rabbitmq-prober`
+
+The name of the prober deployment.
+
+=== `prober.namespace`
+
+[horizontal]
+type:: string
+default:: `rabbitmq`
+
+The namespace in which to deploy the prober.
+
+=== `prober.image`
+
+[horizontal]
+type:: string
+default:: `ghcr.io/projectsyn/component-rabbitmq-operator/prober:latest`
+
+The container image for the RabbitMQ prober.
+
+=== `prober.secretName`
+
+[horizontal]
+type:: string
+default:: `rabbitmq-default-user`
+
+The name of the Kubernetes secret containing RabbitMQ credentials for the prober.
+
+=== `prober.probeInterval`
+
+[horizontal]
+type:: string
+default:: `10`
+
+The interval in seconds between health probes.
+
+=== `prober.metricsPort`
+
+[horizontal]
+type:: integer
+default:: `8080`
+
+The port on which the prober exposes Prometheus metrics.
+
+=== `prober.useTLS`
+
+[horizontal]
+type:: string
+default:: `true`
+
+Whether the prober should use TLS to connect to RabbitMQ.
+
+=== `prober.alerts.enabled`
+
+[horizontal]
+type:: boolean
+default:: `false`
+
+Whether to create Prometheus alert rules for the prober.
+
+=== `prober.resources.requests.memory`
+
+[horizontal]
+type:: string
+default:: `64Mi`
+
+The memory request for the prober container.
+
+=== `prober.resources.requests.cpu`
+
+[horizontal]
+type:: string
+default:: `50m`
+
+The CPU request for the prober container.
+
+=== `prober.resources.limits.memory`
+
+[horizontal]
+type:: string
+default:: `128Mi`
+
+The memory limit for the prober container.
+
+=== `prober.resources.limits.cpu`
+
+[horizontal]
+type:: string
+default:: `100m`
+
+The CPU limit for the prober container.
+
+=== `prober.monitoring.interval`
+
+[horizontal]
+type:: string
+default:: `10s`
+
+The interval at which Prometheus scrapes prober metrics.
+
+=== `prober.monitoring.recordingRulesInterval`
+
+[horizontal]
+type:: string
+default:: `10s`
+
+The interval for Prometheus recording rules evaluation.
+
+== Examples
+
+=== Basic RabbitMQ Cluster
+
+[source,yaml]
+----
+parameters:
+  rabbitmq_operator:
+    rabbitmq:
+      enabled: true
+      name: my-rabbitmq
+      namespace: production
+      replicas: 3
+      plugins:
+        - rabbitmq_shovel
+        - rabbitmq_shovel_management
+----
+
+=== RabbitMQ with TLS
+
+[source,yaml]
+----
+parameters:
+  rabbitmq_operator:
+    rabbitmq:
+      enabled: true
+      tls:
+        enabled: true
+        secretName: rabbitmq-tls-certs
+        dnsNames:
+          amqps: rabbitmq.example.com
+          management: rabbitmq-mgmt.example.com
+----
+
+=== RabbitMQ with SLA Monitoring
+
+[source,yaml]
+----
+parameters:
+  rabbitmq_operator:
+    rabbitmq:
+      enabled: true
+    prober:
+      enabled: true
+      probeInterval: '30'
+      alerts:
+        enabled: true
+----
+
+=== RabbitMQ with Node Affinity
+
+[source,yaml]
+----
+parameters:
+  rabbitmq_operator:
+    rabbitmq:
+      enabled: true
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-type
+                operator: In
+                values: ["rabbitmq"]
+----
