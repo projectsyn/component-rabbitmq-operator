@@ -33,6 +33,9 @@ spec:
     requests:
       cpu: '1'
       memory: 3Gi
+  service:
+    annotations:
+      lbipam.cilium.io/ips: 192.0.2.50
   tls:
     disableNonTLSListeners: true
     secretName: rabbitmq-certs

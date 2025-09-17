@@ -296,6 +296,17 @@ default:: `group`
 
 The group name to grant access to RabbitMQ resources.
 
+=== `rabbitmq.service`
+
+[horizontal]
+type:: dictionary
+default:: `{}`
+
+The service configuration for the `RabbitmqCluster` resource.
+The value of this parameter is used as-is for `spec.service` of the resulting resource.
+
+IMPORTANT: The only fields supported by the operator are `type` and `annotations`.
+
 == Prober Configuration
 
 === `prober.enabled`

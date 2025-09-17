@@ -24,3 +24,6 @@ parameters:
       plugins:
         - rabbitmq_shovel
         - rabbitmq_shovel_management
+      service:
+        annotations:
+          lbipam.cilium.io/ips: 192.0.2.50

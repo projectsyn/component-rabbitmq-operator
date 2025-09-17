@@ -29,6 +29,7 @@ local rabbitmqCluster = {
     },
     replicas: params.replicas,
     resources: params.resources,
+    service: params.service,
     override: {
       statefulSet: {
         spec: {
