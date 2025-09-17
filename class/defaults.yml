@@ -64,6 +64,7 @@ parameters:
       rbac:
         enabled: false
         group: group
+      service: {}
 
     prober:
       enabled: false
