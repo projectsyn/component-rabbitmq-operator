@@ -1,4 +1,5 @@
 // rabbitmq.jsonnet
+local esp = import 'lib/espejote.libsonnet';
 local kap = import 'lib/kapitan.libjsonnet';
 local kube = import 'lib/kube.libsonnet';
 
@@ -147,9 +148,111 @@ local managementRoute = {
   },
 };
 
+local espSA = kube.ServiceAccount('rabbitmq-lb-service-manager') {
+  metadata+: {
+    namespace: params.namespace,
+  },
+};
+
+local espRole = kube.Role('rabbitmq-lb-service-manager') {
+  metadata+: {
+    namespace: params.namespace,
+  },
+  rules: [
+    {
+      apiGroups: [ '' ],
+      resources: [ 'services' ],
+      verbs: [ '*' ],
+    },
+    {
+      apiGroups: [ 'espejote.io' ],
+      resources: [ 'jsonnetlibraries' ],
+      verbs: [ 'get', 'list', 'watch' ],
+    },
+  ],
+};
+
+local espRoleBinding = kube.RoleBinding('rabbitmq-lb-service-manager') {
+  metadata+: {
+    namespace: params.namespace,
+  },
+  roleRef_: espRole,
+  subjects_: [ espSA ],
+};
+
+local espConfig =
+  esp.jsonnetLibrary('rabbitmq-lb-service', params.namespace) {
+    spec: {
+      data: {
+        'config.json': std.manifestJson(params.custom_lb_service),
+      },
+    },
+  };
+
+local espLBService =
+  esp.managedResource('rabbitmq-lb-service', params.namespace) {
+    metadata+: {
+      annotations: {
+        'syn.tools/description': |||
+          This ManagedResource watches the Service created by the
+          rabbitmq-operator for the RabbitmqCluster resource that's created by
+          the Commodore component.
+
+          The ManagedResource creates a copy of the RabbitmqCluster's primary
+          service with `spec.type=LoadBalancer` and a user-configurable
+          `spec.loadBalancerClass`. The values of `metadata.annotations`,
+          `spec.ports` and `spec.selector` are copied from the
+          operator-managed Service and updated whenever the operator makes any
+          changes.
+        |||,
+      },
+    },
+    spec: {
+      applyOptions: {
+        force: true,
+      },
+      context: [
+        {
+          name: 'services',
+          resource: {
+            apiVersion: 'v1',
+            kind: 'Service',
+            // NOTE(sg): Assumption here is that the service has the same name
+            // as the RabbitmqCluster custom resource.
+            name: params.name,
+            namespace: params.namespace,
+          },
+        },
+      ],
+      triggers: [
+        {
+          name: 'service',
+          watchContextResource: {
+            name: 'services',
+          },
+        },
+        {
+          name: 'jsonnetlib',
+          watchResource: {
+            apiVersion: 'espejote.io/v1alpha1',
+            kind: 'JsonnetLibrary',
+            name: espConfig.metadata.name,
+            namespace: params.namespace,
+          },
+        },
+      ],
+      serviceAccountRef: {
+        name: espSA.metadata.name,
+      },
+      template: importstr 'espejote-templates/rabbitmq-lb-service.jsonnet',
+    },
+  };
+
 if params.enabled then {
   '10_namespace': namespace,
   '20_rabbitmq_cluster': rabbitmqCluster,
+  [if params.custom_lb_service.enabled then '99_rabbitmq_lb_service']:
+    [ espSA, espRole, espRoleBinding, espConfig, espLBService ],
 } + (
   if params.rbac.enabled then {
     '30_rbac_role': role,

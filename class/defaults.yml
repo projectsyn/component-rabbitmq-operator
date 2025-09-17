@@ -65,6 +65,9 @@ parameters:
         enabled: false
         group: group
       service: {}
+      custom_lb_service:
+        enabled: false
+        loadBalancerClass: ""
 
     prober:
       enabled: false
