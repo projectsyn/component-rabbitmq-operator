@@ -1,0 +1,21 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  annotations: {}
+  labels:
+    name: rabbitmq-allow-from-world
+  name: rabbitmq-allow-from-world
+  namespace: rabbitmq
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: rabbitmq
+  ingress:
+    - fromEntities:
+        - world
+      toPorts:
+        - ports:
+            - port: '5671'
+              protocol: TCP
+            - port: '5672'
+              protocol: TCP

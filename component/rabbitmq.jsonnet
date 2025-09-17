@@ -248,9 +248,36 @@ local espLBService =
     },
   };
 
+local needs_cnp = std.member(inv.applications, 'cilium');
+local cnp =
+  kube._Object('cilium.io/v2', 'CiliumNetworkPolicy', '%s-allow-from-world' % params.name) {
+    metadata+: {
+      namespace: params.namespace,
+    },
+    spec: {
+      endpointSelector: {
+        matchLabels: {
+          // NOTE(sg): Assumption here is that the pods have label
+          // `app.kubernetes.io/name=<name of RabbitmqCluster custom resource>`
+          'app.kubernetes.io/name': params.name,
+        },
+      },
+      ingress: [ {
+        fromEntities: [ 'world' ],
+        toPorts: [ {
+          ports: [
+            { port: '5671', protocol: 'TCP' },
+            { port: '5672', protocol: 'TCP' },
+          ],
+        } ],
+      } ],
+    },
+  };
+
 if params.enabled then {
   '10_namespace': namespace,
   '20_rabbitmq_cluster': rabbitmqCluster,
+  [if needs_cnp then '30_rabbitmq_cilium_networkpolicy']: cnp,
   [if params.custom_lb_service.enabled then '99_rabbitmq_lb_service']:
     [ espSA, espRole, espRoleBinding, espConfig, espLBService ],
 } + (

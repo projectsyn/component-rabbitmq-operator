@@ -307,6 +307,14 @@ The value of this parameter is used as-is for `spec.service` of the resulting re
 
 IMPORTANT: The only fields supported by the operator are `type` and `annotations`.
 
+[TIP]
+====
+When the Cilium Commodore component is present on the cluster, the component unconditionally deploys a `CiliumNetworkPolicy` which allows traffic on `5671/tcp` and `5672/tcp` from outside the cluster (Cilium entity `world`).
+This policy ensures that accessing the RabbitMQ cluster over an LB service works correctly on Cilium-enabled clusters.
+
+Network policies to allow access from within the cluster must be managed separately.
+====
+
 === `rabbitmq.custom_lb_service.enabled`
 
 [horizontal]

@@ -1,5 +1,6 @@
 # Overwrite parameters here
-
+applications:
+  - cilium
 parameters:
   kapitan:
     dependencies:
