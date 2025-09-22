@@ -307,6 +307,36 @@ The value of this parameter is used as-is for `spec.service` of the resulting re
 
 IMPORTANT: The only fields supported by the operator are `type` and `annotations`.
 
+[TIP]
+====
+When the Cilium Commodore component is present on the cluster, the component unconditionally deploys a `CiliumNetworkPolicy` which allows traffic on `5671/tcp` and `5672/tcp` from outside the cluster (Cilium entity `world`).
+This policy ensures that accessing the RabbitMQ cluster over an LB service works correctly on Cilium-enabled clusters.
+
+Network policies to allow access from within the cluster must be managed separately.
+====
+
+=== `rabbitmq.custom_lb_service.enabled`
+
+[horizontal]
+type:: boolean
+default:: `false`
+
+When this parameter is set to true, the component deploys an Espejote `ManagedResource` which creates a copy of the `RabbitmqCluster`-owned primary service with `spec.type=LoadBalancer` and a configurable `spec.loadBalancerClass`.
+For environments, where setting `spec.loadBalancerClass` isn't required, users should prefer setting `rabbitmq.service.type=LoadBalancer`.
+
+The `ManagedResource` copies the primary service's `metadata.annotations`, `spec.ports` and `spec.selector`.
+Users that want to customize the LoadBalancer service via annotations -- for example for requesting specific IPs from Cilium LB-IPAM -- should add these annotations in `rabbitmq.service.annotations`.
+This should simplify removing this feature if the operator gains support for custom `spec.loadBalancerClass` in the future.
+
+=== `rabbitmq.custom_lb_service.loadBalancerClass`
+
+[horizontal]
+type:: string
+default:: `""`
+
+This parameter allows users to provide a load balancer class names for the custom LoadBalancer service.
+The value is used as `spec.loadBalancerClass` for the LB service without any validation.
+
 == Prober Configuration
 
 === `prober.enabled`
