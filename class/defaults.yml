@@ -63,7 +63,7 @@ parameters:
           management: management.rabbitmq.com
       rbac:
         enabled: false
-        group: group
+        groups: []
       service: {}
       custom_lb_service:
         enabled: false

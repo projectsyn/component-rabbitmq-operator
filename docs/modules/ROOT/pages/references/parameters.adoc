@@ -288,13 +288,13 @@ default:: `false`
 
 Whether to create RBAC resources for accessing RabbitMQ.
 
-=== `rabbitmq.rbac.group`
+=== `rabbitmq.rbac.groups`
 
 [horizontal]
-type:: string
-default:: `group`
+type:: array
+default:: `[]`
 
-The group name to grant access to RabbitMQ resources.
+An array of group names to grant access to RabbitMQ resources.
 
 === `rabbitmq.service`
 

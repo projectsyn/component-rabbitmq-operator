@@ -1,4 +1,5 @@
 // rabbitmq.jsonnet
+local com = import 'lib/commodore.libjsonnet';
 local esp = import 'lib/espejote.libsonnet';
 local kap = import 'lib/kapitan.libjsonnet';
 local kube = import 'lib/kube.libsonnet';
@@ -93,9 +94,10 @@ local roleBinding = {
   subjects: [
     {
       kind: 'Group',
-      name: params.rbac.group,
+      name: group,
       apiGroup: 'rbac.authorization.k8s.io',
-    },
+    }
+    for group in com.renderArray(params.rbac.groups + [ std.get(params.rbac, 'group', '') ])
   ],
   roleRef: {
     kind: 'Role',
