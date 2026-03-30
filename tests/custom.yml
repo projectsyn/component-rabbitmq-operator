@@ -27,7 +27,7 @@ parameters:
         enabled: true
       rbac:
         enabled: true
-        group: group  # deprecated, legacy support
+        group: group # deprecated, legacy support
         groups:
           - group
           - my-other-group
@@ -37,6 +37,9 @@ parameters:
       service:
         annotations:
           lbipam.cilium.io/ips: 192.0.2.50
+      additionalConfig: |
+        channel_max = 100
+        vm_memory_high_watermark.absolute = 2Gi
       custom_lb_service:
         enabled: true
         loadBalancerClass: io.cilium/l2-announcer
