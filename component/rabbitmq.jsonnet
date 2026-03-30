@@ -14,6 +14,15 @@ local namespace = kube.Namespace(params.namespace) {
   spec: {},
 };
 
+local userOverridesWatermark = std.length(std.findSubstr('vm_memory_high_watermark.absolute', params.additionalConfig)) > 0;
+local additionalConfig = std.join('\n', std.filter(
+  function(s) s != '',
+  [
+    if !userOverridesWatermark then 'vm_memory_high_watermark.absolute = %s' % params.resources.limits.memory,
+    params.additionalConfig,
+  ]
+));
+
 local rabbitmqCluster = {
   apiVersion: 'rabbitmq.com/v1beta1',
   kind: 'RabbitmqCluster',
@@ -24,6 +33,7 @@ local rabbitmqCluster = {
   spec: {
     rabbitmq: {
       additionalPlugins: params.plugins,
+      additionalConfig: additionalConfig,
     },
     image: params.image,
     persistence: {

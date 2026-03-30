@@ -22,6 +22,9 @@ spec:
   persistence:
     storage: 3Gi
   rabbitmq:
+    additionalConfig: |
+      channel_max = 100
+      vm_memory_high_watermark.absolute = 2Gi
     additionalPlugins:
       - rabbitmq_shovel
       - rabbitmq_shovel_management
