@@ -44,6 +44,7 @@ parameters:
       image: docker.io/bitnamilegacy/rabbitmq:3.11.26-debian-11-r0
       affinity: {}
       plugins: []
+      additionalConfig: ''
       persistence:
         storage: 3Gi
       resources:

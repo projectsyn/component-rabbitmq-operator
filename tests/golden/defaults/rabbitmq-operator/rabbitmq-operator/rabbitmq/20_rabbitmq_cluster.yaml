@@ -15,6 +15,7 @@ spec:
   persistence:
     storage: 3Gi
   rabbitmq:
+    additionalConfig: vm_memory_high_watermark.absolute = 3Gi
     additionalPlugins: []
   replicas: 1
   resources:

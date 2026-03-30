@@ -192,6 +192,20 @@ default:: `[]`
 
 List of additional RabbitMQ plugins to enable.
 
+=== `rabbitmq.additionalConfig`
+
+[horizontal]
+type:: string
+default:: `""`
+
+Additional configuration to append to `rabbitmq.conf`.
+The value is appended after the component-managed configuration entries.
+
+The component always sets `vm_memory_high_watermark.absolute` to the value of `rabbitmq.resources.limits.memory`.
+Any configuration provided here is appended after that line.
+
+NOTE: Changing this value on an existing `RabbitmqCluster` will trigger a StatefulSet rolling restart and cause temporary RabbitMQ downtime.
+
 === `rabbitmq.persistence.storage`
 
 [horizontal]
@@ -507,6 +521,22 @@ parameters:
       alerts:
         enabled: true
 ----
+
+=== RabbitMQ with Additional Configuration
+
+[source,yaml]
+----
+parameters:
+  rabbitmq_operator:
+    rabbitmq:
+      resources:
+        limits:
+          memory: 4Gi  # <1>
+      additionalConfig: |
+        channel_max = 100
+----
+<1> `vm_memory_high_watermark.absolute` is automatically set to this value (`4Gi`).
+Any entries in `additionalConfig` are appended after it.
 
 === RabbitMQ with Node Affinity
 
