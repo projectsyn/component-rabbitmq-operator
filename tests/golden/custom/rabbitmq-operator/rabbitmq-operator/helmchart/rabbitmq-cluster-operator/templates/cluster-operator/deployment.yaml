@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq-cluster-operator
     app.kubernetes.io/part-of: rabbitmq
-    app.kubernetes.io/version: 2.6.0
-    helm.sh/chart: rabbitmq-cluster-operator-3.10.10
+    app.kubernetes.io/version: 2.7.0
+    helm.sh/chart: rabbitmq-cluster-operator-3.20.1
   name: rabbitmq-operator-rabbitmq-cluster-operator
   namespace: syn-rabbitmq-operator
 spec:
@@ -28,8 +28,8 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: rabbitmq-cluster-operator
         app.kubernetes.io/part-of: rabbitmq
-        app.kubernetes.io/version: 2.6.0
-        helm.sh/chart: rabbitmq-cluster-operator-3.10.10
+        app.kubernetes.io/version: 2.7.0
+        helm.sh/chart: rabbitmq-cluster-operator-3.20.1
     spec:
       affinity:
         nodeAffinity: null
@@ -44,6 +44,7 @@ spec:
                     app.kubernetes.io/name: rabbitmq-cluster-operator
                 topologyKey: kubernetes.io/hostname
               weight: 1
+      automountServiceAccountToken: true
       containers:
         - args:
             - --metrics-bind-address=:9782
@@ -55,11 +56,11 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: DEFAULT_RABBITMQ_IMAGE
-              value: docker.io/bitnamilegacy/rabbitmq:3.12.12-debian-11-r0
+              value: docker.io/bitnamilegacy/rabbitmq:3.12.13-debian-12-r2
             - name: DEFAULT_USER_UPDATER_IMAGE
-              value: docker.io/bitnamilegacy/rmq-default-credential-updater:1.0.4-debian-11-r5
+              value: docker.io/bitnamilegacy/rmq-default-credential-updater:1.0.4-debian-12-r14
           envFrom: null
-          image: docker.io/bitnamilegacy/rabbitmq-cluster-operator:2.6.0-debian-11-r3
+          image: docker.io/bitnamilegacy/rabbitmq-cluster-operator:2.7.0-debian-12-r8
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 5
@@ -84,8 +85,5 @@ spec:
             periodSeconds: 30
             successThreshold: 1
             timeoutSeconds: 5
-          resources:
-            limits: {}
-            requests: {}
       initContainers: null
       serviceAccountName: rabbitmq-operator-rabbitmq-cluster-operator
