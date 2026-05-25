@@ -9,8 +9,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq-cluster-operator
     app.kubernetes.io/part-of: rabbitmq
-    app.kubernetes.io/version: 1.12.2
-    helm.sh/chart: rabbitmq-cluster-operator-3.10.10
+    app.kubernetes.io/version: 1.17.4
+    helm.sh/chart: rabbitmq-cluster-operator-4.4.34
   name: rabbitmq-operator-rabbitmq-messaging-topology-operator-webhook
 webhooks:
   - admissionReviewVersions:
@@ -82,6 +82,27 @@ webhooks:
       service:
         name: rabbitmq-operator-rabbitmq-messaging-topology-operator-webhook
         namespace: syn-rabbitmq-operator
+        path: /validate-rabbitmq-com-v1beta1-operatorpolicy
+        port: 443
+    failurePolicy: Fail
+    name: voperatorpolicy.kb.io
+    rules:
+      - apiGroups:
+          - rabbitmq.com
+        apiVersions:
+          - v1beta1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - operatorpolicies
+    sideEffects: None
+  - admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: rabbitmq-operator-rabbitmq-messaging-topology-operator-webhook
+        namespace: syn-rabbitmq-operator
         path: /validate-rabbitmq-com-v1alpha1-superstream
         port: 443
     failurePolicy: Fail
@@ -117,6 +138,27 @@ webhooks:
           - UPDATE
         resources:
           - permissions
+    sideEffects: None
+  - admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: rabbitmq-operator-rabbitmq-messaging-topology-operator-webhook
+        namespace: syn-rabbitmq-operator
+        path: /validate-rabbitmq-com-v1beta1-topicpermission
+        port: 443
+    failurePolicy: Fail
+    name: vtopicpermission.kb.io
+    rules:
+      - apiGroups:
+          - rabbitmq.com
+        apiVersions:
+          - v1beta1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - topicpermissions
     sideEffects: None
   - admissionReviewVersions:
       - v1
