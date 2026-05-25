@@ -6,7 +6,7 @@ parameters:
     charts:
       rabbitmq-cluster-operator:
         source: https://charts.bitnami.com/bitnami
-        version: 3.10.10
+        version: 4.4.34
 
     operator:
       helmValues:

@@ -1,0 +1,114 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/component: messaging-topology-operator
+    app.kubernetes.io/instance: rabbitmq-operator
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: rabbitmq-cluster-operator
+    app.kubernetes.io/part-of: rabbitmq
+    app.kubernetes.io/version: 1.17.4
+    helm.sh/chart: rabbitmq-cluster-operator-4.4.34
+    rbac.authorization.k8s.io/aggregate-to-admin: 'true'
+  name: rabbitmq-operator-rabbitmq-messaging-topology-operator-syn-rabb-admin
+rules:
+  - apiGroups:
+      - rabbitmq.com
+    resources:
+      - bindings
+      - exchanges
+      - federations
+      - operatorpolicies
+      - permissions
+      - policies
+      - queues
+      - schemareplications
+      - shovels
+      - superstreams
+      - topicpermissions
+      - users
+      - vhosts
+    verbs:
+      - create
+      - delete
+      - deletecollection
+      - get
+      - list
+      - patch
+      - update
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/component: messaging-topology-operator
+    app.kubernetes.io/instance: rabbitmq-operator
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: rabbitmq-cluster-operator
+    app.kubernetes.io/part-of: rabbitmq
+    app.kubernetes.io/version: 1.17.4
+    helm.sh/chart: rabbitmq-cluster-operator-4.4.34
+    rbac.authorization.k8s.io/aggregate-to-edit: 'true'
+  name: rabbitmq-operator-rabbitmq-messaging-topology-operator-syn-rabb-edit
+rules:
+  - apiGroups:
+      - rabbitmq.com
+    resources:
+      - bindings
+      - exchanges
+      - federations
+      - operatorpolicies
+      - permissions
+      - policies
+      - queues
+      - schemareplications
+      - shovels
+      - superstreams
+      - topicpermissions
+      - users
+      - vhosts
+    verbs:
+      - create
+      - delete
+      - deletecollection
+      - get
+      - list
+      - patch
+      - update
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/component: messaging-topology-operator
+    app.kubernetes.io/instance: rabbitmq-operator
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: rabbitmq-cluster-operator
+    app.kubernetes.io/part-of: rabbitmq
+    app.kubernetes.io/version: 1.17.4
+    helm.sh/chart: rabbitmq-cluster-operator-4.4.34
+    rbac.authorization.k8s.io/aggregate-to-view: 'true'
+  name: rabbitmq-operator-rabbitmq-messaging-topology-operator-syn-rabb-view
+rules:
+  - apiGroups:
+      - rabbitmq.com
+    resources:
+      - bindings
+      - exchanges
+      - federations
+      - operatorpolicies
+      - permissions
+      - policies
+      - queues
+      - schemareplications
+      - shovels
+      - superstreams
+      - topicpermissions
+      - users
+      - vhosts
+    verbs:
+      - get
+      - list
+      - watch
