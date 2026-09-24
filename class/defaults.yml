@@ -9,6 +9,7 @@ parameters:
         version: 3.10.10
 
     operator:
+      OPERATOR_SCOPE_NAMESPACE: null
       helmValues:
         useCertManager: true
         clusterOperator:

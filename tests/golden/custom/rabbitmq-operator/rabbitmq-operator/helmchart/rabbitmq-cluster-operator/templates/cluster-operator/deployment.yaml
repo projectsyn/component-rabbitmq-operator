@@ -58,6 +58,8 @@ spec:
               value: docker.io/bitnamilegacy/rabbitmq:3.12.12-debian-11-r0
             - name: DEFAULT_USER_UPDATER_IMAGE
               value: docker.io/bitnamilegacy/rmq-default-credential-updater:1.0.4-debian-11-r5
+            - name: OPERATOR_SCOPE_NAMESPACE
+              value: rabbitmq
           envFrom: null
           image: docker.io/bitnamilegacy/rabbitmq-cluster-operator:2.6.0-debian-11-r3
           imagePullPolicy: IfNotPresent

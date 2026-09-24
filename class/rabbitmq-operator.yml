@@ -32,3 +32,9 @@ parameters:
           name: ${_instance}
           namespace: ${rabbitmq_operator:namespace}
         output_path: rabbitmq-operator/helmchart
+  commodore:
+    postprocess:
+      filters:
+        - type: jsonnet
+          path: rabbitmq-operator/helmchart/rabbitmq-cluster-operator/templates/cluster-operator/
+          filter: postprocess/patch-operator-scope.jsonnet
