@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq-cluster-operator
     app.kubernetes.io/part-of: rabbitmq
-    app.kubernetes.io/version: 1.12.2
-    helm.sh/chart: rabbitmq-cluster-operator-3.10.10
+    app.kubernetes.io/version: 1.13.0
+    helm.sh/chart: rabbitmq-cluster-operator-3.20.1
   name: rabbitmq-operator-rabbitmq-messaging-topology-operator-syn-rabb
 rules:
   - apiGroups:
@@ -292,3 +292,21 @@ rules:
       - get
       - patch
       - update
+  - apiGroups:
+      - rabbitmq.com
+    resources:
+      - operatorpolicies
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - rabbitmq.com
+    resources:
+      - operatorpolicies/status
+    verbs:
+      - get
