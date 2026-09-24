@@ -1,0 +1,20 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  labels:
+    app.kubernetes.io/component: messaging-topology-operator
+    app.kubernetes.io/instance: rabbitmq-operator
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: rabbitmq-cluster-operator
+    app.kubernetes.io/part-of: rabbitmq
+    app.kubernetes.io/version: 2.16.1
+    helm.sh/chart: rabbitmq-cluster-operator-4.4.34
+  name: rabbitmq-operator-rabbitmq-messaging-topology-operator
+  namespace: syn-rabbitmq-operator
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: messaging-topology-operator
+      app.kubernetes.io/instance: rabbitmq-operator
+      app.kubernetes.io/name: rabbitmq-cluster-operator
