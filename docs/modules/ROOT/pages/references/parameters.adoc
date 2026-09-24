@@ -30,6 +30,15 @@ The version of the RabbitMQ cluster operator Helm chart to deploy.
 
 == Operator Configuration
 
+=== `operator.OPERATOR_SCOPE_NAMESPACE`
+
+[horizontal]
+type:: string
+default:: unset
+
+The namespace, or comma-separated list of namespaces, in which the RabbitMQ cluster operator watches and reconciles `RabbitmqCluster` resources.
+If unset, the operator watches all namespaces.
+
 === `operator.helmValues.useCertManager`
 
 [horizontal]
